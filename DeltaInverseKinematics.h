@@ -10,14 +10,19 @@
 #endif*/
 
 
+
 class DeltaInverseKinematics
 {
     public:
         // SETUP 
-        DeltaInverseKinematics(double *B1,double *B2,double *B3,double ArmLength,double RodLength,double BassTri,double PlatformTri)
-
+        DeltaInverseKinematics(double *B1temp,double *B2temp,double *B3temp,double ArmLength,double RodLength,double BassTri,double PlatformTri);
+        
         // SET 
         void set(double x,double y,double z);
+        void setOffsets(double upperX, double upperY, double upperZ, double lowerX, double lowerY, double lowerZ);
+        
+        // TEST
+        bool test(double x,double y,double z);
         
         
     private:
@@ -39,7 +44,17 @@ class DeltaInverseKinematics
 
         double L;
         double l;
+
+        double offsetUpperB1 = 0;
+        double offsetUpperB2 = 0;
+        double offsetUpperB3 = 0;
+        double offsetLowerB1 = 180;
+        double offsetLowerB2 = 180;
+        double offsetLowerB3 = 180;
         
+        void calulate(double x,double y,double z, double *B1a,double *B2a,double *B3a,double *B1b,double *B2b,double *B3b);
+        double straightArms(double base,double platform,double armL1, double armL2);
+
 };
 
 #endif 
