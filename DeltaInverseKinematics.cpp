@@ -10,7 +10,6 @@
 
 #include "DeltaInverseKinematics.h"
 #include <math.h>
-#include "pch.h"
 
 /******************* SETUP *******************/
 
@@ -61,6 +60,10 @@ void DeltaInverseKinematics::set(double x,double y,double z)
 
   DeltaInverseKinematics::calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
   
+    *B1angle = B1b;
+    *B2angle = B2b;
+    *B3angle = B3b;
+/*
   if(B1a >= offsetUpperB1 && B1a <= offsetLowerB1 )
   {
     *B1angle = B1a;
@@ -86,7 +89,7 @@ void DeltaInverseKinematics::set(double x,double y,double z)
   else if(B3b >= offsetUpperB3 && B3b <= offsetLowerB3 )
   {
     *B3angle = B3b;
-  }
+  }*/
 }
 
         
@@ -102,7 +105,6 @@ bool DeltaInverseKinematics::test(double x,double y,double z)
   double B3b;
 
   DeltaInverseKinematics::calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
-
 
   if((B1a < offsetUpperB1 && B1a > offsetLowerB1 )&&(B1b < offsetUpperB1 && B1b > offsetLowerB1 ))
   {
@@ -143,20 +145,27 @@ void DeltaInverseKinematics::calulate(double x,double y,double z, double *B1a,do
 	double T1 = (E1 * E1 + F1 + F1 - G1 + G1);
 	double TH1a = 2 * atan2((-F1 + sqrt(T1)), (G1 - E1));
 	double TH1b = 2 * atan2((-F1 - sqrt(T1)), (G1 - E1));
-	*B1a = (TH1a >= 0) * TH1a * 180 / 3.14 + (TH1a < 0) * (360 + TH1a  * 180 / 3.14) ;
-	*B1b = (TH1b >= 0) * TH1b * 180 / 3.14 + (TH1b < 0) * (360 + TH1b  * 180 / 3.14) ;
+	//*B1a = (TH1a >= 0) * TH1a * 180 / 3.14 + (TH1a < 0) * (360 + TH1a  * 180 / 3.14) ;
+	//*B1b = (TH1b >= 0) * TH1b * 180 / 3.14 + (TH1b < 0) * (360 + TH1b  * 180 / 3.14) ;
 
 	double T2 = (E2 * E2 + F2 + F2 - G2 + G2);
 	double TH2a = 2 * atan2((-F2 + sqrt(T2)), (G2 - E2));
 	double TH2b = 2 * atan2((-F2 - sqrt(T2)), (G2 - E2));
-	*B2a = (TH2a >= 0) * TH2a * 180 / 3.14 + (TH2a < 0) * (360 + TH2a * 180 / 3.14);
-	*B2b = (TH2b >= 0) * TH2b * 180 / 3.14 + (TH2b < 0) * (360 + TH2b * 180 / 3.14);
+	//*B2a = (TH2a >= 0) * TH2a * 180 / 3.14 + (TH2a < 0) * (360 + TH2a * 180 / 3.14);
+	//*B2b = (TH2b >= 0) * TH2b * 180 / 3.14 + (TH2b < 0) * (360 + TH2b * 180 / 3.14);
 
 	double T3 = (E3 * E3 + F3 + F3 - G3 + G3);
 	double TH3a = 2 * atan2((-F3 + sqrt(T3)), (G3 - E3));
 	double TH3b = 2 * atan2((-F3 - sqrt(T3)), (G3 - E3));
-	*B3a = (TH3a >= 0) * TH3a * 180 / 3.14 + (TH3a < 0) * (360 + TH3a * 180 / 3.14);
-	*B3b = (TH3b >= 0) * TH3b * 180 / 3.14 + (TH3b < 0) * (360 + TH3b * 180 / 3.14);
+	//*B3a = (TH3a >= 0) * TH3a * 180 / 3.14 + (TH3a < 0) * (360 + TH3a * 180 / 3.14);
+	//*B3b = (TH3b >= 0) * TH3b * 180 / 3.14 + (TH3b < 0) * (360 + TH3b * 180 / 3.14);
+  
+	*B1a = -TH1a +4.71238898038;
+	*B1b = -TH1b +4.71238898038;
+	*B2a = -TH2a +4.71238898038;
+	*B2b = -TH2b +4.71238898038;
+	*B3a = -TH3a +4.71238898038;
+	*B3b = -TH3b +4.71238898038;
 
 
 

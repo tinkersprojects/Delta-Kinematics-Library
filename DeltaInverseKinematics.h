@@ -10,7 +10,6 @@
 #endif*/
 
 
-
 class DeltaInverseKinematics
 {
     public:
@@ -24,6 +23,9 @@ class DeltaInverseKinematics
         // TEST
         bool test(double x,double y,double z);
         
+        void calulate(double x,double y,double z, double *B1a,double *B2a,double *B3a,double *B1b,double *B2b,double *B3b);
+        double straightArms(double base,double platform,double armL1, double armL2);
+
         
     private:
         double *B1angle;
@@ -52,9 +54,7 @@ class DeltaInverseKinematics
         double offsetLowerB2 = 180;
         double offsetLowerB3 = 180;
         
-        void calulate(double x,double y,double z, double *B1a,double *B2a,double *B3a,double *B1b,double *B2b,double *B3b);
-        double straightArms(double base,double platform,double armL1, double armL2);
-
+       
 };
 
 #endif 
