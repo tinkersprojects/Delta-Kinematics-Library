@@ -18,7 +18,8 @@ class DeltaInverseKinematics
         
         // SET 
         void set(double x,double y,double z);
-        void setOffsets(double upperX, double upperY, double upperZ, double lowerX, double lowerY, double lowerZ);
+        void setOffsets(double X, double Y, double Z);
+        void setLimits(double upperX, double upperY, double upperZ, double lowerX, double lowerY, double lowerZ);
         
         // TEST
         bool test(double x,double y,double z);
@@ -47,12 +48,15 @@ class DeltaInverseKinematics
         double L;
         double l;
 
-        double offsetUpperB1 = 0;
-        double offsetUpperB2 = 0;
-        double offsetUpperB3 = 0;
-        double offsetLowerB1 = 180;
-        double offsetLowerB2 = 180;
-        double offsetLowerB3 = 180;
+        double offsetX = 0;
+        double offsetY = 0;
+        double offsetZ = 0;
+        double LimitsUpperB1 = 0;
+        double LimitsUpperB2 = 0;
+        double LimitsUpperB3 = 0;
+        double LimitsLowerB1 = 3.14;
+        double LimitsLowerB2 = 3.14;
+        double LimitsLowerB3 = 3.14;
         
        
 };

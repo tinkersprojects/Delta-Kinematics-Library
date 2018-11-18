@@ -38,19 +38,29 @@ DeltaInverseKinematics::DeltaInverseKinematics(double *B1temp,double *B2temp,dou
         
 /******************* SET *******************/
 
-void DeltaInverseKinematics::setOffsets(double upperB1, double upperB2, double upperB3, double lowerB1, double lowerB2, double lowerB3)
+void DeltaInverseKinematics::setOffsets(double X, double Y, double Z)
 {
-  offsetUpperB1 = upperB1;
-  offsetUpperB2 = upperB2;
-  offsetUpperB3 = upperB3;
-  offsetLowerB1 = lowerB1;
-  offsetLowerB2 = lowerB2;
-  offsetLowerB3 = lowerB3;
+  LimitX = X;
+  LimitY = Y;
+  LimitZ = Z;
+}
+void DeltaInverseKinematics::setLimits(double upperB1, double upperB2, double upperB3, double lowerB1, double lowerB2, double lowerB3)
+{
+  LimitsUpperB1 = upperB1;
+  LimitsUpperB2 = upperB2;
+  LimitsUpperB3 = upperB3;
+  LimitsLowerB1 = lowerB1;
+  LimitsLowerB2 = lowerB2;
+  LimitsLowerB3 = lowerB3;
 }
 
 
 void DeltaInverseKinematics::set(double x,double y,double z)
 {
+  x += offsetX;
+  y += offsetY;
+  z += offsetY;
+
   double B1a;
   double B2a;
   double B3a;
@@ -59,37 +69,33 @@ void DeltaInverseKinematics::set(double x,double y,double z)
   double B3b;
 
   DeltaInverseKinematics::calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
-  
-    *B1angle = B1b;
-    *B2angle = B2b;
-    *B3angle = B3b;
-/*
-  if(B1a >= offsetUpperB1 && B1a <= offsetLowerB1 )
+
+  if(B1a >= LimitsUpperB1 && B1a <= LimitsLowerB1 )
   {
     *B1angle = B1a;
   }
-  else if(B1b >= offsetUpperB1 && B1b <= offsetLowerB1 )
+  else if(B1b >= LimitsUpperB1 && B1b <= LimitsLowerB1 )
   {
     *B1angle = B1b;
   }
   
-  if(B2a >= offsetUpperB2 && B2a <= offsetLowerB2 )
+  if(B2a >= LimitsUpperB2 && B2a <= LimitsLowerB2 )
   {
     *B2angle = B2a;
   }
-  else if(B2b >= offsetUpperB2 && B2b <= offsetLowerB2 )
+  else if(B2b >= LimitsUpperB2 && B2b <= LimitsLowerB2 )
   {
     *B2angle = B2b;
   }
   
-  if(B3a >= offsetUpperB3 && B3a <= offsetLowerB3 )
+  if(B3a >= LimitsUpperB3 && B3a <= LimitsLowerB3 )
   {
     *B3angle = B3a;
   }
-  else if(B3b >= offsetUpperB3 && B3b <= offsetLowerB3 )
+  else if(B3b >= LimitsUpperB3 && B3b <= LimitsLowerB3 )
   {
     *B3angle = B3b;
-  }*/
+  }
 }
 
         
@@ -106,17 +112,17 @@ bool DeltaInverseKinematics::test(double x,double y,double z)
 
   DeltaInverseKinematics::calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
 
-  if((B1a < offsetUpperB1 && B1a > offsetLowerB1 )&&(B1b < offsetUpperB1 && B1b > offsetLowerB1 ))
+  if((B1a < LimitsUpperB1 && B1a > LimitsLowerB1 )&&(B1b < LimitsUpperB1 && B1b > LimitsLowerB1 ))
   {
     return false;
   }
   
-  if((B2a < offsetUpperB2 && B2a > offsetLowerB2 )&&(B2b < offsetUpperB2 && B2b > offsetLowerB2 ))
+  if((B2a < LimitsUpperB2 && B2a > LimitsLowerB2 )&&(B2b < LimitsUpperB2 && B2b > LimitsLowerB2 ))
   {
     return false;
   }
   
-  if((B3a < offsetUpperB3 && B3a > offsetLowerB3 )&&(B3b < offsetUpperB3 && B3b > offsetLowerB3 ))
+  if((B3a < LimitsUpperB3 && B3a > LimitsLowerB3 )&&(B3b < LimitsUpperB3 && B3b > LimitsLowerB3 ))
   {
     return false;
   }
@@ -142,60 +148,52 @@ void DeltaInverseKinematics::calulate(double x,double y,double z, double *B1a,do
 	double F3 = 2 * z*L;
 	double G3 = x * x + y * y + z * z + b * b + c * c + L * L + 2 * (-x * b + y * c) - l * l;
 
-	double T1 = (E1 * E1 + F1 + F1 - G1 + G1);
+	double T1 = (E1 * E1 + F1 * F1 - G1 * G1);
 	double TH1a = 2 * atan2((-F1 + sqrt(T1)), (G1 - E1));
 	double TH1b = 2 * atan2((-F1 - sqrt(T1)), (G1 - E1));
-	//*B1a = (TH1a >= 0) * TH1a * 180 / 3.14 + (TH1a < 0) * (360 + TH1a  * 180 / 3.14) ;
-	//*B1b = (TH1b >= 0) * TH1b * 180 / 3.14 + (TH1b < 0) * (360 + TH1b  * 180 / 3.14) ;
+	*B1a = 1.57 + (TH1a >= 0) * TH1a + (TH1a < 0) * (6.28 + TH1a) ;
+	*B1b = 1.57 + (TH1b >= 0) * TH1b + (TH1b < 0) * (6.28 + TH1b) ;
 
-	double T2 = (E2 * E2 + F2 + F2 - G2 + G2);
+	double T2 = (E2 * E2 + F2 * F2 - G2 * G2);
 	double TH2a = 2 * atan2((-F2 + sqrt(T2)), (G2 - E2));
 	double TH2b = 2 * atan2((-F2 - sqrt(T2)), (G2 - E2));
-	//*B2a = (TH2a >= 0) * TH2a * 180 / 3.14 + (TH2a < 0) * (360 + TH2a * 180 / 3.14);
-	//*B2b = (TH2b >= 0) * TH2b * 180 / 3.14 + (TH2b < 0) * (360 + TH2b * 180 / 3.14);
+	*B2a = 1.57 + (TH2a >= 0) * TH2a + (TH2a < 0) * (6.28 + TH2a);
+	*B2b = 1.57 + (TH2b >= 0) * TH2b + (TH2b < 0) * (6.28 + TH2b);
 
-	double T3 = (E3 * E3 + F3 + F3 - G3 + G3);
+	double T3 = (E3 * E3 + F3 * F3 - G3 * G3);
 	double TH3a = 2 * atan2((-F3 + sqrt(T3)), (G3 - E3));
 	double TH3b = 2 * atan2((-F3 - sqrt(T3)), (G3 - E3));
-	//*B3a = (TH3a >= 0) * TH3a * 180 / 3.14 + (TH3a < 0) * (360 + TH3a * 180 / 3.14);
-	//*B3b = (TH3b >= 0) * TH3b * 180 / 3.14 + (TH3b < 0) * (360 + TH3b * 180 / 3.14);
+	*B3a = 1.57 + (TH3a >= 0) * TH3a + (TH3a < 0) * (6.28 + TH3a);
+	*B3b = 1.57 + (TH3b >= 0) * TH3b + (TH3b < 0) * (6.28 + TH3b);
   
-	*B1a = -TH1a +4.71238898038;
-	*B1b = -TH1b +4.71238898038;
-	*B2a = -TH2a +4.71238898038;
-	*B2b = -TH2b +4.71238898038;
-	*B3a = -TH3a +4.71238898038;
-	*B3b = -TH3b +4.71238898038;
+  TH1a += 1.57;
+	TH1b += 1.57;
+	TH2a += 1.57;
+	TH2b += 1.57;
+	TH3a += 1.57;
+	TH3b += 1.57;
 
+  while(TH1a<0){TH1a+=6.28;}
+  while(TH1a>6.28){TH1a-=6.28;}
+  while(TH1b<0){TH1b+=6.28;}
+  while(TH1b>6.28){TH1b-=6.28;}
 
+  while(TH2a<0){TH2a+=6.28;}
+  while(TH2a>6.28){TH2a-=6.28;}
+  while(TH2b<0){TH2b+=6.28;}
+  while(TH2b>6.28){TH2b-=6.28;}
 
-   /* double E1 = 2*L*(y+a);
-    double F1 = 2*z*L;
-    double G1 = x*x+y*y+z*z+a*a+L*L+2*y*a-l*l;
+  while(TH3a<0){TH3a+=6.28;}
+  while(TH3a>6.28){TH3a-=6.28;}
+  while(TH3b<0){TH3b+=6.28;}
+  while(TH3b>6.28){TH3b-=6.28;}
 
-    double E2 = -L*(sqrt(3)*(x+b)+y+c);
-    double F2 = 2*z*L;
-    double G2 = x*x+y*y+z*z+b*b+c*c+L*L+2*(x*b+y*c)-l*l;
-
-    double E3 = L*(sqrt(3)*(x-b)-y-c);
-    double F3 = 2*z*L;
-    double G3 = x*x+y*y+z*z+b*b+c*c+L*L+2*(-x*b+y*c)-l*l;
-
-    double T1 = E1*E1+F1+F1-G1+G1;
-    double TH1a = 2*atan2((-F1+sqrt(T1)),(G1-E1));
-    double TH1b = 2*atan2((-F1-sqrt(T1)),(G1-E1));
-    *B1angle = TH1a;
-    
-
-    double T2 = E2*E2+F2+F2-G2+G2;
-    double TH2a = 2*atan2((-F2+sqrt(T2)),(G2-E2));
-    double TH2b = 2*atan2((-F2-sqrt(T2)),(G2-E2));
-    *B2angle = TH2a;
-
-    double T3 = E3*E3+F3+F3-G3+G3;
-    double TH3a = 2*atan2((-F3+sqrt(T3)),(G3-E3));
-    double TH3b = 2*atan2((-F3-sqrt(T3)),(G3-E3));
-    *B2angle = TH2a;*/
+	*B1a = TH1a  ;
+	*B1b = TH1b ;
+	*B2a = TH2a ;
+	*B2b = TH2b ;
+	*B3a = TH3a ;
+	*B3b = TH3b ;
 }
 
 double DeltaInverseKinematics::straightArms(double base,double platform,double armL1, double armL2)
