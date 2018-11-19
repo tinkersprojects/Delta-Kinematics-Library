@@ -1,4 +1,4 @@
-# Delta-Kinematics-Library
+# Delta-Kinematics-Library (still working on some of the library)
 Forward and Inverse Kinematics Library for Delta robot.
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=sGBrFT5dmzU
