@@ -40,9 +40,9 @@ DeltaInverseKinematics::DeltaInverseKinematics(double *B1temp,double *B2temp,dou
 
 void DeltaInverseKinematics::setOffsets(double X, double Y, double Z)
 {
-  LimitX = X;
-  LimitY = Y;
-  LimitZ = Z;
+  offsetX = X;
+  offsetY = Y;
+  offsetZ = Z;
 }
 void DeltaInverseKinematics::setLimits(double upperB1, double upperB2, double upperB3, double lowerB1, double lowerB2, double lowerB3)
 {
@@ -68,7 +68,7 @@ void DeltaInverseKinematics::set(double x,double y,double z)
   double B2b;
   double B3b;
 
-  DeltaInverseKinematics::calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
+  this->calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
 
   if(B1a >= LimitsUpperB1 && B1a <= LimitsLowerB1 )
   {
@@ -110,7 +110,7 @@ bool DeltaInverseKinematics::test(double x,double y,double z)
   double B2b;
   double B3b;
 
-  DeltaInverseKinematics::calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
+  this->calulate(x,y,z,&B1a,&B2a,&B3a,&B1b,&B2b,&B3b);
 
   if((B1a < LimitsUpperB1 && B1a > LimitsLowerB1 )&&(B1b < LimitsUpperB1 && B1b > LimitsLowerB1 ))
   {
