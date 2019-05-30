@@ -9,7 +9,7 @@ double angleB1;
 double angleB2;
 double angleB3;
 
-DeltaInverseKinematics IPK(&angleB1,&angleB2,&angleB3,70,300,139,112);
+DeltaInverseKinematics IPK(&angleB1,&angleB2,&angleB3,0.070,0.300,0.139,0.112);
 
 void setup() 
 {  
@@ -22,11 +22,7 @@ void setup()
 
 void servo()
 {
-  //Serial.println(String(angleB1* 180 / 3.14)+","+String(angleB2* 180 / 3.14)+","+String(angleB3* 180 / 3.14));
-/*
-  servo1.write(0);
-  servo2.write(0);
-  servo3.write(0);*/
+  Serial.println(String(angleB1* 180 / 3.14)+","+String(angleB2* 180 / 3.14)+","+String(angleB3* 180 / 3.14));
   servo1.write(angleB1* 180 / 3.14);
   servo2.write(angleB2* 180 / 3.14);
   servo3.write(angleB3* 180 / 3.14);
@@ -34,35 +30,15 @@ void servo()
 
 void loop() 
 {
-  IPK.set(0,0,-300);
+  IPK.set(0,0,-0.300);
   servo();
   delay(3000);
 
-  IPK.set(0,0,-270);
+  IPK.set(0,0,-0.270);
   servo();
   delay(3000);
 
-  IPK.set(100,100,-270);
+  IPK.set(0.100,0.100,-0.270);
   servo();
   delay(3000);
-  /*
-  IPK.set(-100,100,-270);
-  servo();
-  delay(3000);
-  
-  IPK.set(-100,-100,-270);
-  servo();
-  delay(3000);
-  
-  IPK.set(100,-100,-270);
-  servo();
-  delay(3000);
-  
-  IPK.set(100,100,-270);
-  servo();
-  delay(3000);
-  
-  IPK.set(0,0,-270);
-  servo();
-  delay(3000);*/
 }
