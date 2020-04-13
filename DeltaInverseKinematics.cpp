@@ -34,19 +34,9 @@ DeltaInverseKinematics::DeltaInverseKinematics(double *B1temp,double *B2temp,dou
 
 	Sb = Wb / 0.28867513459;
 	Ub = Sb * 0.57735026919;
-  
-  Serial.print("Wb ");
-  Serial.println(Wb);
-  Serial.print("Sb ");
-  Serial.println(Sb);
 
 	Sp = Wp / 0.28867513459;
 	Up = Sp * 0.57735026919;
-
-  Serial.print("Wp ");
-  Serial.println(Wp);
-  Serial.print("Sp ");
-  Serial.println(Sp);
 
 	a = Wb - Up;
 	b = (Sp - 1.73205 * Wb) / 2;
