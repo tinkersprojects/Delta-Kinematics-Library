@@ -9,6 +9,13 @@
  **********************************************************************************************/
 
 #include "DeltaInverseKinematics.h"
+
+#if ARDUINO >= 100
+  #include "Arduino.h"
+#else
+  #include "WProgram.h"
+#endif
+
 #include <math.h>
 
 /******************* SETUP *******************/
@@ -22,14 +29,24 @@ DeltaInverseKinematics::DeltaInverseKinematics(double *B1temp,double *B2temp,dou
   L = ArmLength;
   l = RodLength;
 
-  Sb = BassTri;
-  Sp = PlatformTri;
+  Wb = BassTri;
+  Wp = PlatformTri;
 
+	Sb = Wb / 0.28867513459;
 	Ub = Sb * 0.57735026919;
-	Wb = Sb * 0.28867513459;
+  
+  Serial.print("Wb ");
+  Serial.println(Wb);
+  Serial.print("Sb ");
+  Serial.println(Sb);
 
+	Sp = Wp / 0.28867513459;
 	Up = Sp * 0.57735026919;
-	Wp = Sp * 0.28867513459;
+
+  Serial.print("Wp ");
+  Serial.println(Wp);
+  Serial.print("Sp ");
+  Serial.println(Sp);
 
 	a = Wb - Up;
 	b = (Sp - 1.73205 * Wb) / 2;
@@ -136,17 +153,17 @@ bool DeltaInverseKinematics::test(double x,double y,double z)
 
 void DeltaInverseKinematics::calulate(double x,double y,double z, double *B1a,double *B2a,double *B3a,double *B1b,double *B2b,double *B3b)
 {
-	double E1 = 2 * L*(y + a);
-	double F1 = 2 * z*L;
-	double G1 = x * x + y * y + z * z + a * a + L * L + 2 * y*a - l * l;
+	double E1 = 2 * L * (y + a);
+	double F1 = 2 * z * L;
+	double G1 = x * x + y * y + z * z + a * a + L * L + 2 * y * a - l * l;
 
 	double E2 = - L * (1.73205*(x + b) + y + c);
 	double F2 = 2 * z*L;
 	double G2 = x * x + y * y + z * z + b * b + c * c + L * L + 2 * (x*b + y * c) - l * l;
 
 	double E3 = L * (1.73205*(x - b) - y - c);
-	double F3 = 2 * z*L;
-	double G3 = x * x + y * y + z * z + b * b + c * c + L * L + 2 * (-x * b + y * c) - l * l;
+	double F3 = 2 * z * L;
+	double G3 = x * x + y * y + z * z + b * b + c * c + L * L + 2 * (-1 * x * b + y * c) - l * l;
 
 	double T1 = (E1 * E1 + F1 * F1 - G1 * G1);
 	double TH1a = 2 * atan2((-F1 + sqrt(T1)), (G1 - E1));
