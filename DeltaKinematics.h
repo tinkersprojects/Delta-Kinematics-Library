@@ -1,59 +1,49 @@
 
 #ifndef DeltaKinematics_h
 #define DeltaKinematics_h
-/*
-#if ARDUINO >= 100
-#include <Arduino.h>
-#else
-#include <WProgram.h>
-#include <wiring.h>
-#endif*/
 
+#define sqrt3 1.7320508075688772
+#define pi  3.141592653     // PI
+#define sin120  sqrt3/2.0   
+#define cos120  -0.5        
+#define tan60  sqrt3
+#define sin30  0.5
+#define tan30  1.0/sqrt3
+
+#define non_existing_povar_error -2
+#define no_error 1
 
 class DeltaKinematics
 {
     public:
-        // SETUP
-        DeltaKinematics::DeltaKinematics(double *x,double *y,double *z,double ArmLength,double RodLength,double TopTri,double BottomTri);
+        // SETUP 
+        DeltaKinematics(double ArmLength,double RodLength,double BassTri,double PlatformTri);
+        
+        int forward();
+        int forward(double thetaA, double thetaB, double thetaC);
+        int inverse();
+        int inverse(double x0, double y0, double z0);
 
-        // SET 
-        void set(double a,double b,double c);
-        void setLimits(double upperB1, double upperB2, double upperB3, double lowerB1, double lowerB2, double lowerB3);
-        void setOffset(double x,double y,double z);
+        double x;
+        double y;
+        double z;
 
-        // TEST
-        bool test(double a,double b,double c);
-
-        void calulate(double *xa, double *ya,double *za, double *xb, double *yb,double *zb, double B1angle,double B2angle,double B3angle);
-        double straightArms(double base,double platform,double armL1, double armL2);
+        double a;
+        double b;
+        double c;
         
     private:
-        double *X;
-        double *Y;
-        double *Z;
+    
+        int delta_calcAngleYZ(double *Angle, double x0, double y0, double z0);
 
-        double Sb;
-        double Ub;
-        double Wb;
-
-        double Sp;
-        double Up;
-        double Wp;
-
-        double L;
-        double l;
-
-        double limitUpperB1 = 0;
-        double limitUpperB2 = 0;
-        double limitUpperB3 = 0;
-        double limitLowerB1 = 180;
-        double limitLowerB2 = 180;
-        double limitLowerB3 = 180;
-
-        double offsetX = 0;
-        double offsetY = 0;
-        double offsetZ = 0;
-        
+        double ArmLength;
+        double RodLength;
+        double BassTri;
+        double PlatformTri;
+       
 };
 
 #endif 
+
+
+
