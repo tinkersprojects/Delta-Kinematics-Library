@@ -19,7 +19,8 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 
 
-## Waiting for Image
+## Delta Kinematics Setup
+![Delta Kinematics Setup](https://github.com/tinkersprojects/Delta-Kinematics-Library/blob/master/Images/delta.png)
 
 
 
