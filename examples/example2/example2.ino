@@ -5,7 +5,7 @@ Servo servo3;
 Servo servo2;
 Servo servo1;
 
-DeltaKinematics DK(0.070,0.300,0.139,0.112);
+DeltaKinematics DK(70,300,139,112);
 
 void setup() 
 {  
@@ -18,7 +18,9 @@ void setup()
 
 void servo()
 {
+  Serial.println(String(DK.x)+","+String(DK.y)+","+String(DK.z));
   Serial.println(String(DK.a)+","+String(DK.b)+","+String(DK.c));
+  Serial.println();
   servo1.write(DK.a);
   servo2.write(DK.b);
   servo3.write(DK.c);
@@ -26,12 +28,12 @@ void servo()
 
 void loop() 
 {
-  DK.x =  0.000;
-  DK.y =  0.000;
-  DK.z = -0.300;
+  DK.x =  0;
+  DK.y =  0;
+  DK.z = -300;
   DK.inverse();
   // OR
-  DK.inverse(0.000,0.000,-0.300);
+  DK.inverse(0,0,-300);
 
   servo();
   delay(3000);
@@ -40,12 +42,12 @@ void loop()
 
   // next position 
   
-  DK.x =  0.000;
-  DK.y =  0.000;
-  DK.z = -0.300;
+  DK.x =  0;
+  DK.y =  0;
+  DK.z = -270;
   DK.inverse();
   // OR
-  DK.inverse(0.000,0.000,-0.270);
+  DK.inverse(000,000,-270);
 
   servo();
   delay(3000);
@@ -54,12 +56,12 @@ void loop()
 
   // next position 
   
-  DK.x =  0.000;
-  DK.y =  0.000;
-  DK.z = -0.300;
+  DK.x =  100;
+  DK.y =  100;
+  DK.z = -270;
   DK.inverse();
   // OR
-  DK.inverse(0.100,0.100,-0.270);
+  DK.inverse(100,100,-270);
 
   servo();
   delay(3000);

@@ -17,7 +17,7 @@ class DeltaKinematics
 {
     public:
         // SETUP 
-        DeltaKinematics(double ArmLength,double RodLength,double BassTri,double PlatformTri);
+        DeltaKinematics(double _ArmLength,double _RodLength,double _BassTri,double _PlatformTri);
         
         int forward();
         int forward(double thetaA, double thetaB, double thetaC);

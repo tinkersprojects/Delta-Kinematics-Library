@@ -1,6 +1,6 @@
 #include <DeltaKinematics.h>
 
-DeltaKinematics DK(0.070,0.300,0.139,0.112);
+DeltaKinematics DK(70,300,139,112);
 
 void setup() 
 {  
@@ -9,24 +9,47 @@ void setup()
 
 void loop() 
 {
-  DK.x =  0.000;
-  DK.y =  0.000;
-  DK.z = -0.300;
+  DK.x =  0;
+  DK.y =  0;
+  DK.z = -300;
   DK.inverse();
-  Serial.println(String(DK.a)+","+String(DK.b* 180 / 3.14)+","+String(DK.c* 180 / 3.14));
+  // OR
+  DK.inverse(0,0,-300);
+
+  Serial.println(String(DK.x)+","+String(DK.y)+","+String(DK.z));
+  Serial.println(String(DK.a)+","+String(DK.b)+","+String(DK.c));
+  Serial.println();
   delay(3000);
 
-  DK.x =  0.100;
-  DK.y =  0.100;
-  DK.z = -0.270;
+
+
+  // next position 
+  
+  DK.x =  0;
+  DK.y =  0;
+  DK.z = -270;
   DK.inverse();
-  Serial.println(String(DK.a)+","+String(DK.b* 180 / 3.14)+","+String(DK.c* 180 / 3.14));
+  // OR
+  DK.inverse(000,000,-270);
+
+  Serial.println(String(DK.x)+","+String(DK.y)+","+String(DK.z));
+  Serial.println(String(DK.a)+","+String(DK.b)+","+String(DK.c));
+  Serial.println();
   delay(3000);
 
-  DK.x = -0.100;
-  DK.y = -0.100;
-  DK.z = -0.100;
+
+
+  // next position 
+  
+  DK.x =  100;
+  DK.y =  100;
+  DK.z = -270;
   DK.inverse();
-  Serial.println(String(DK.a)+","+String(DK.b* 180 / 3.14)+","+String(DK.c* 180 / 3.14));
+  // OR
+  DK.inverse(100,100,-270);
+
+  Serial.println(String(DK.x)+","+String(DK.y)+","+String(DK.z));
+  Serial.println(String(DK.a)+","+String(DK.b)+","+String(DK.c));
+  Serial.println();
   delay(3000);
 }
