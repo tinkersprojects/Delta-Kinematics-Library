@@ -1,15 +1,11 @@
-#include <DeltaInverseKinematics.h>
+#include <DeltaKinematics.h>
 #include <Servo.h>
 
 Servo servo3;
 Servo servo2;
 Servo servo1;
 
-double angleB1;
-double angleB2;
-double angleB3;
-
-DeltaInverseKinematics IPK(&angleB1,&angleB2,&angleB3,0.070,0.300,0.139,0.112);
+DeltaKinematics DK(0.070,0.300,0.139,0.112);
 
 void setup() 
 {  
@@ -22,23 +18,49 @@ void setup()
 
 void servo()
 {
-  Serial.println(String(angleB1* 180 / 3.14)+","+String(angleB2* 180 / 3.14)+","+String(angleB3* 180 / 3.14));
-  servo1.write(angleB1* 180 / 3.14);
-  servo2.write(angleB2* 180 / 3.14);
-  servo3.write(angleB3* 180 / 3.14);
+  Serial.println(String(DK.a)+","+String(DK.b)+","+String(DK.c));
+  servo1.write(DK.a);
+  servo2.write(DK.b);
+  servo3.write(DK.c);
 }
 
 void loop() 
 {
-  IPK.set(0,0,-0.300);
+  DK.x =  0.000;
+  DK.y =  0.000;
+  DK.z = -0.300;
+  DK.inverse();
+  // OR
+  DK.inverse(0.000,0.000,-0.300);
+
   servo();
   delay(3000);
 
-  IPK.set(0,0,-0.270);
+
+
+  // next position 
+  
+  DK.x =  0.000;
+  DK.y =  0.000;
+  DK.z = -0.300;
+  DK.inverse();
+  // OR
+  DK.inverse(0.000,0.000,-0.270);
+
   servo();
   delay(3000);
 
-  IPK.set(0.100,0.100,-0.270);
+
+
+  // next position 
+  
+  DK.x =  0.000;
+  DK.y =  0.000;
+  DK.z = -0.300;
+  DK.inverse();
+  // OR
+  DK.inverse(0.100,0.100,-0.270);
+
   servo();
   delay(3000);
 }
