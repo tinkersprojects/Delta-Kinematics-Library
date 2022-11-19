@@ -136,7 +136,7 @@ int DeltaKinematics::delta_calcAngleYZ(double *Angle, double x0, double y0, doub
 
   double yj = (y1 - aV*bV - sqrt(dV))/(bV*bV + 1); // choosing outer povar
   double zj = aV + bV*yj;
-  *Angle = atan2(-zj,(y1 - yj)) * 180.0/pi + ((yj>y1)?180.0:0.0);
+  *Angle = atan2(-zj,(y1 - yj)) * 180.0/pi;
 
   return no_error;  // return error, theta
 }
