@@ -29,6 +29,7 @@ DeltaKinematics::DeltaKinematics(double _ArmLength,double _RodLength,double _Bas
   BassTri = _BassTri;            // base
   RodLength = _RodLength;
   ArmLength = _ArmLength;
+  x = y = z = a = b = c = 0.0;
 }
 
 
@@ -119,8 +120,8 @@ int DeltaKinematics::forward(double thetaA, double thetaB, double thetaC)
 // helper functions, calculates angle thetaA (for YZ-pane)
 int DeltaKinematics::delta_calcAngleYZ(double *Angle, double x0, double y0, double z0)
 {
-  double y1 = -0.5 * 0.57735 * BassTri;  // f/2 * tan(30 deg)
-      y0 -= 0.5 * 0.57735 * PlatformTri;  // shift center to edge
+  double y1 = -0.5 * tan30 * BassTri;  // f/2 * tan(30 deg)
+      y0 -= 0.5 * tan30 * PlatformTri;  // shift center to edge
 
   // z = a + b*y
   double aV = (x0*x0 + y0*y0 + z0*z0 +ArmLength*ArmLength - RodLength*RodLength - y1*y1)/(2.0*z0);
@@ -135,7 +136,7 @@ int DeltaKinematics::delta_calcAngleYZ(double *Angle, double x0, double y0, doub
 
   double yj = (y1 - aV*bV - sqrt(dV))/(bV*bV + 1); // choosing outer povar
   double zj = aV + bV*yj;
-  *Angle = atan2(-zj,(y1 - yj)) * 180.0/pi + ((yj>y1)?180.0:0.0);
+  *Angle = atan2(-zj,(y1 - yj)) * 180.0/pi;
 
   return no_error;  // return error, theta
 }
@@ -163,11 +164,11 @@ int DeltaKinematics::inverse(double x0, double y0, double z0)
   c = 0;
   int error = delta_calcAngleYZ(&a, x0, y0, z0);
   if(error != no_error)
-    return no_error;
+    return error;
   error = delta_calcAngleYZ(&b, x0*cos120 + y0*sin120, y0*cos120-x0*sin120, z0);
   if(error != no_error)
-    return no_error;
+    return error;
   error = delta_calcAngleYZ(&c, x0*cos120 - y0*sin120, y0*cos120+x0*sin120, z0);
 
-  return no_error;
+  return error;
 }

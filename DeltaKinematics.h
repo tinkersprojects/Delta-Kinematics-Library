@@ -2,8 +2,8 @@
 #ifndef DeltaKinematics_h
 #define DeltaKinematics_h
 
-#define sqrt3 1.7320508075688772
-#define pi  3.141592653     // PI
+#define sqrt3 1.7320508075688772935274463415059
+#define pi  3.1415926535897932384626433832795     // PI
 #define sin120  sqrt3/2.0   
 #define cos120  -0.5        
 #define tan60  sqrt3
