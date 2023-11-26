@@ -154,7 +154,7 @@ int DeltaKinematics::delta_calcAngleYZ(double *Angle, double x0, double y0, doub
 // inverse kinematics: (x0, y0, z0) -> (thetaA, thetaB, thetaC)
 int DeltaKinematics::inverse() 
 {
-  inverse(x, y, z);
+  return inverse(x, y, z);
 }
 
 int DeltaKinematics::inverse(double x0, double y0, double z0) 
